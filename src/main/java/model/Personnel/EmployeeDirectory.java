@@ -13,29 +13,25 @@ import model.Business.Business;
  *
  * @author kal bugrara
  */
+
 public class EmployeeDirectory {
 
     Business business;
     ArrayList<EmployeeProfile> employeeList;
 
-    public EmployeeDirectory(Business d) {
-
+    public EmployeeDirectory(Business d){
         business = d;
         employeeList = new ArrayList<EmployeeProfile>();
-
     }
 
     public EmployeeProfile newEmployeeProfile(Person p) {
-
         EmployeeProfile sp = new EmployeeProfile(p);
         employeeList.add(sp);
         return sp;
     }
 
     public EmployeeProfile findEmployee(String id) {
-
         for (EmployeeProfile sp : employeeList) {
-
             if (sp.isMatch(id)) {
                 return sp;
             }

@@ -8,13 +8,13 @@ import java.util.Collections;
  *
  * @author kal bugrara
  */
+
 public class MasterOrderReport {
+
     ArrayList<OrderSummary> orderSummaryList;
 
     public MasterOrderReport() {
-
         orderSummaryList = new ArrayList<OrderSummary>();
-
     }
 
     public void generateOrderReport(ArrayList<Order> orders) {
@@ -50,6 +50,6 @@ public class MasterOrderReport {
             System.out.print((index + 1) + " ");
             os.printOrderSummary();
         }
-
     }
+    
 }

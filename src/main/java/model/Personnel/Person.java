@@ -9,17 +9,27 @@ package model.Personnel;
  *
  * @author kal bugrara
  */
+
+
+
 public class Person {
 
     String id;
+    String name;
 
-    public Person(String id) {
 
-        this.id = id;
+    public Person(String name) {
+
+        //this.id = id;
+        this.name = name;
     }
 
     public String getPersonId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public boolean isMatch(String id) {
@@ -33,4 +43,7 @@ public class Person {
     public String toString() {
         return getPersonId();
     }
+
+
+
 }

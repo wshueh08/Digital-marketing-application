@@ -7,21 +7,25 @@ package model.ProductManagement;
 
 import java.util.ArrayList;
 
+import model.MarketModel.MarketChannelAssignment;
 import model.OrderManagement.OrderItem;
 
 /**
  *
  * @author kal bugrara
  */
+
 public class Product {
+
     private String name;
     private int floorPrice;
     private int ceilingPrice;
     private int targetPrice;
     ArrayList<OrderItem> orderItems;
+    MarketChannelAssignment marketChannelComb;
 
+  
     public Product(int fp, int cp, int tp) {
-
         floorPrice = fp;
         ceilingPrice = cp;
         targetPrice = tp;
@@ -36,6 +40,15 @@ public class Product {
         orderItems = new ArrayList<OrderItem>();
     }
 
+    public Product(int fp, int cp, int tp, MarketChannelAssignment marketChannelComb) {
+        floorPrice = fp;
+        ceilingPrice = cp;
+        targetPrice = tp;
+        this.marketChannelComb = marketChannelComb; // 设置关联的MarketChannelAssignment
+        orderItems = new ArrayList<OrderItem>();
+    }
+
+
     public Product updateProduct(int fp, int cp, int tp) {
         floorPrice = fp;
         ceilingPrice = cp;
@@ -43,16 +56,16 @@ public class Product {
         return this; // returns itself
     }
 
-    public int getTargetPrice() {
+    public int getTargetPrice(){
         return targetPrice;
     }
 
-    public void addOrderItem(OrderItem oi) {
+    public void addOrderItem(OrderItem oi){
         orderItems.add(oi);
     }
 
     // Number of item sales above target
-    public int getNumberOfProductSalesAboveTarget() {
+    public int getNumberOfProductSalesAboveTarget(){
         int sum = 0;
         for (OrderItem oi : orderItems) {
             if (oi.isActualAboveTarget() == true)
@@ -71,18 +84,13 @@ public class Product {
     }
 
     public boolean isProductAlwaysAboveTarget() {
-
         for (OrderItem oi : orderItems) {
             if (oi.isActualAboveTarget() == false)
-                return false; //
+                return false; 
         }
         return true;
     }
-    // calculates the revenues gained or lost (in relation to the target)
-    // For example, if target is at $2000 and actual is $2500 then revenue gained
-    // is $500 above the expected target. If the actual is $1800 then the lose will
-    // be $200
-    // Add all these difference to get the total including wins and loses
+
 
     public int getOrderPricePerformance() {
         int sum = 0;
@@ -104,6 +112,21 @@ public class Product {
         name = n;
     }
 
+
+
+    // 添加一个设置关联MarketChannelAssignment的方法
+    public void setMarketChannelCombination(MarketChannelAssignment marketChannelComb) {
+        this.marketChannelComb = marketChannelComb;
+    }
+
+    public MarketChannelAssignment getMarketChannelCombination() {
+        return marketChannelComb;
+    }
+    
+  
+
+
+
     @Override
     public String toString() {
         return name;
@@ -120,5 +143,9 @@ public class Product {
     public int getCeilingPrice() {
         return ceilingPrice;
     }
+
+
+
+    
 
 }

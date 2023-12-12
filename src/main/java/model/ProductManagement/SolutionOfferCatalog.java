@@ -11,7 +11,20 @@ import java.util.ArrayList;
  *
  * @author kal bugrara
  */
-public class SolutionOfferCatalog {
-    ArrayList<SolutionOffer> solutionoffers;
+
+public class SolutionOfferCatalog{
     
+    ArrayList<SolutionOffer> solutionoffers;
+
+    public SolutionOfferCatalog(){
+        this.solutionoffers = new ArrayList<>();
+    }
+
+    public void addSolutionOffer(SolutionOffer solutionOffer){
+        solutionoffers.add(solutionOffer);
+    }
+
+    public ArrayList<SolutionOffer>getSolutionOffers(){
+        return new ArrayList<>(solutionoffers);
+    }
 }

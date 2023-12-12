@@ -15,14 +15,13 @@ import model.Personnel.Profile;
  *
  * @author kal bugrara
  */
+
 public class SalesPersonProfile extends Profile {
     ArrayList<Order> salesOrders;
 
     public SalesPersonProfile(Person p) {
-
         super(p);
         salesOrders = new ArrayList<Order>();
-
     }
 
     public void addSalesOrder(Order o) {

@@ -11,36 +11,37 @@ import model.ProductManagement.Product;
  *
  * @author kal bugrara
  */
+
 public class OrderItem {
 
     Product selectedproduct;
     int actualPrice;
     int quantity;
 
-    public OrderItem(Product p, int paidprice, int q) {
+    public OrderItem(Product p, int paidprice, int q){
         selectedproduct = p;
         p.addOrderItem(this); //make sure product links back to the item
         quantity = q;
         this.actualPrice = paidprice;
     }
 
-    public int getOrderItemTotal() {
+    public int getOrderItemTotal(){
         return actualPrice * quantity;
     }
 
 //The following calculates what the price gain would have been if products were sold at target price
-    public int getOrderItemTargetTotal() {
+    public int getOrderItemTargetTotal(){
         return selectedproduct.getTargetPrice() * quantity;
     }
 
     //returns positive if seller is making higher margin than target
     //returns negative if seller is making lower margin than target
     //otherwise zero meaning neutral
-    public int calculatePricePerformance() {
+    public int calculatePricePerformance(){
         return (actualPrice - selectedproduct.getTargetPrice()) * quantity;
     }
 
-    public boolean isActualAboveTarget() {
+    public boolean isActualAboveTarget(){
         if (actualPrice > selectedproduct.getTargetPrice()) {
             return true;
         } else {
@@ -48,34 +49,31 @@ public class OrderItem {
         }
     }
 
-    public boolean isActualBelowTarget() {
+    public boolean isActualBelowTarget(){
         if (actualPrice < selectedproduct.getTargetPrice()) {
             return true;
         } else {
             return false;
         }
-
     }
 
-    public boolean isActualATTarget() {
+    public boolean isActualATTarget(){
         if (actualPrice == selectedproduct.getTargetPrice()) {
             return true;
         } else {
             return false;
         }
-
     }
 
-    public Product getSelectedProduct() {
+    public Product getSelectedProduct(){
         return selectedproduct;
     }
 
-    public int getActualPrice() {
+    public int getActualPrice(){
         return actualPrice;
-
     }
 
-    public int getQuantity() {
+    public int getQuantity(){
         return quantity;
     }
     

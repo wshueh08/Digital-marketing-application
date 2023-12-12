@@ -12,21 +12,23 @@ import java.util.Random;
  *
  * @author kal bugrara
  */
+
 public class ProductCatalog {
 
     String type;
     ArrayList<Product> products; // list of products initially empty
 
-    public ProductCatalog(String n) {
+    public ProductCatalog(String n){
         type = n;
         products = new ArrayList<Product>(); /// create the list of elements otherwise it is null
     }
 
     // new ProductCatalog(); or new ProductCatalog("Printers");
-    public ProductCatalog() {
+    public ProductCatalog(){
         type = "unknown";
         products = new ArrayList<Product>();
     }
+
 
     public Product newProduct(int fp, int cp, int tp) {
         Product p = new Product(fp, cp, tp);
@@ -40,22 +42,25 @@ public class ProductCatalog {
         return p;
     }
 
-    public ProductsReport generateProductPerformanceReport(String sortingRule) {
+
+
+    public ProductsReport generateProductPerformanceReport(String sortingRule){
         ProductsReport productsReport = new ProductsReport(sortingRule);
 
         for (Product p : products) {
-
             ProductSummary ps = new ProductSummary(p);
             productsReport.addProductSummary(ps);
         }
         return productsReport;
     }
 
-    public ArrayList<Product> getProductList() {
+
+    public ArrayList<Product> getProductList(){
         return products;
     }
+    
 
-    public Product pickRandomProduct() {
+    public Product pickRandomProduct(){
         if (products.size() == 0)
             return null;
         Random r = new Random();
@@ -63,7 +68,7 @@ public class ProductCatalog {
         return products.get(randomIndex);
     }
 
-    public void printShortInfo() {
+    public void printShortInfo(){
         System.out.println("There are " + products.size() + " products in this catalog");
     }
 

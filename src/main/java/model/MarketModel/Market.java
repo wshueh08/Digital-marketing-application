@@ -6,6 +6,11 @@
 package model.MarketModel;
 
 import java.util.ArrayList;
+//import java.util.HashMap;
+//import java.util.List;
+//import java.util.Map;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import model.ProductManagement.SolutionOffer;
 
@@ -13,15 +18,56 @@ import model.ProductManagement.SolutionOffer;
  *
  * @author kal bugrara
  */
+
+
+// electronics, clothes, and sephora
 public class Market {
+
+    String name;
     ArrayList<SolutionOffer> so;
     ArrayList<MarketChannelAssignment> channels;
     ArrayList<String> characteristics;
     ArrayList<Market> submarkets;
     int size;
 
-    public Market(String s) {
+
+    public Market(String name) {
+       this.name = name;
+       characteristics = new ArrayList<String>();
+       this.so = new ArrayList<>(); //6 market bundles
+    }
+
+    public String getName(){
+        return name;
+    }
+
+    /*public Market(String s) {
         characteristics = new ArrayList<String>();
         characteristics.add(s);
+        this.so = new ArrayList<>();
+        this.channels = new ArrayList<>();
+    }*/
+
+    /* 
+    public void loadSolutionOffers(List<SolutionOffer> offers) {
+        this.so.addAll(offers);
+    }*/
+
+    public void addSolutionOffer(SolutionOffer offer) {
+        this.so.add(offer);
     }
+
+    public List<SolutionOffer> getSolutionOffer() {
+        return this.so;
+    }
+
+
+
+    @Override
+    public String toString() {
+        return "Market: " + name;
+    }
+
+
+
 }

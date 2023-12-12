@@ -11,27 +11,23 @@ import java.util.ArrayList;
  *
  * @author kal bugrara
  */
+
 public class PersonDirectory {
 
     ArrayList<Person> personList;
 
-    public PersonDirectory() {
-
+    public PersonDirectory(){
         personList = new ArrayList<Person>();
-
     }
 
-    public Person newPerson(String id) {
-
+    public Person newPerson(String id){
         Person p = new Person(id);
         personList.add(p);
         return p;
     }
 
-    public Person findPerson(String id) {
-
+    public Person findPerson(String id){
         for (Person p : personList) {
-
             if (p.isMatch(id)) {
                 return p;
             }

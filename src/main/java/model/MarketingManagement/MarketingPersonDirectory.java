@@ -14,6 +14,7 @@ import model.Personnel.Person;
  *
  * @author kal bugrara
  */
+
 public class MarketingPersonDirectory {
 
     Business business;
@@ -33,7 +34,6 @@ public class MarketingPersonDirectory {
     public MarketingPersonProfile findMarketingPerson(String id) {
 
         for (MarketingPersonProfile sp : marketingPersonList) {
-
             if (sp.isMatch(id)) {
                 return sp;
             }

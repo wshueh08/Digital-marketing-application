@@ -11,9 +11,12 @@ import model.OrderManagement.Order;
  *
  * @author kal bugrara
  */
+
 public class CustomerSummary {
+    
     Order subjectorder;
     int ordertotal;
+
     public CustomerSummary(CustomerProfile cp){
         
     }

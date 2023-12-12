@@ -12,35 +12,33 @@ import java.util.Random;
  *
  * @author kal bugrara
  */
-public class SupplierDirectory {
+
+public class SupplierDirectory{
     ArrayList<Supplier> suppliers;
 
-    public SupplierDirectory() {
+    public SupplierDirectory(){
         suppliers = new ArrayList<Supplier>();
     }
 
-    public Supplier newSupplier(String n) {
+    public Supplier newSupplier(String n){
         Supplier supplier = new Supplier(n);
         suppliers.add(supplier);
         return supplier;
-
     }
 
-    public Supplier findSupplier(String id) {
-
+    public Supplier findSupplier(String id){
         for (Supplier supplier : suppliers) {
-
             if (supplier.getName().equals(id))
                 return supplier;
         }
         return null;
     }
 
-    public ArrayList<Supplier> getSupplierList() {
+    public ArrayList<Supplier> getSupplierList(){
         return suppliers;
     }
 
-    public Supplier pickRandomSupplier() {
+    public Supplier pickRandomSupplier(){
         if (suppliers.size() == 0)
             return null;
         Random r = new Random();
@@ -48,7 +46,7 @@ public class SupplierDirectory {
         return suppliers.get(randomIndex);
     }
 
-    public void printShortInfo() {
+    public void printShortInfo(){
         System.out.println("Checking what's inside the supplier directory.");
         System.out.println("There are " + suppliers.size() + " suppliers.");
         for (Supplier s : suppliers) {

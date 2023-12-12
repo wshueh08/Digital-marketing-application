@@ -11,25 +11,28 @@ import model.MarketModel.Market;
 import model.OrderManagement.Order;
 import model.Personnel.Person;
 
-/**
+/*
  *
  * @author kal bugrara
  */
+
+
 public class CustomerProfile {
+    
     ArrayList<Order> orders;
     ArrayList<Market> markets;
-
     Person person;
 
-    public CustomerProfile(Person p) {
-        person = p;
-        orders = new ArrayList<Order>();
+
+    public CustomerProfile(Person p){
+        this.person = p;
+        this.orders = new ArrayList<Order>();
     }
 
-    public int getTotalPricePerformance() {
-        // for each order in the customer orderlist
-        // calculate order price performance and add it to the sum
 
+
+    public int getTotalPricePerformance() {
+       
         return 0;
     }
 
@@ -43,7 +46,6 @@ public class CustomerProfile {
             if (o.isOrderAboveTotalTarget() == true)
                 sum = sum + 1;
         }
-
         return sum;
     }
 
@@ -65,6 +67,8 @@ public class CustomerProfile {
         orders.add(o);
     }
 
+
+
     @Override
     public String toString() {
         return person.getPersonId();
@@ -77,5 +81,6 @@ public class CustomerProfile {
     public Person getPerson() {
         return person;
     }
+
 
 }

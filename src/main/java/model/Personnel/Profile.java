@@ -9,16 +9,18 @@ package model.Personnel;
  *
  * @author kal bugrara
  */
-public abstract class Profile {
+
+public abstract class Profile{
+
     Person person;
 
     public Profile(Person p) {
         person = p;
-
     }
 
     public abstract String getRole();
 
+    
     public Person getPerson() {
         return person;
     }
