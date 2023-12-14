@@ -18,7 +18,6 @@ import model.CustomerManagement.CustomerProfile;
 import model.MarketModel.Channel;
 import model.MarketModel.Market;
 import model.MarketModel.MarketChannelAssignment;
-import model.OrderManagement.GenerateReport;
 import model.OrderManagement.MasterOrderList;
 import model.OrderManagement.MasterOrderReport;
 import model.OrderManagement.Order;
@@ -41,20 +40,19 @@ public class DigitalMarketingApplication {
   /**
    * @param args the command line arguments
    */
+  
   static Scanner sc = new Scanner(System.in);
   static Business business = ConfigureABusiness.createABusinessAndLoadALotOfData("NEU", 3, 2, 6,1, 18, 3, 2, 2); 
   public static void main(String[] args) {
 
-
     SupplierDirectory sd = business.getSupplierDirectory();
     MasterOrderList mol = business.getMasterOrderList();
     MasterOrderReport orderReport = mol.generateMasterOrderReport();
-
     //test all data
     //business.printShortInfo();
 
-
     boolean exitCode = false;
+
 
     while (!exitCode) {
       System.out.println("\n1. I'm a customer, please give me something cool");
@@ -66,35 +64,40 @@ public class DigitalMarketingApplication {
 
       switch (choice) {
         case 1:
-          //customer option
-          System.out.println("\nPlease enter your name: ");
-          String customerName = sc.nextLine();
+        //customer option
+        System.out.println("\nPlease enter your name: ");
+        String customerName = sc.nextLine();
 
-          Person person = new Person(customerName);
-          CustomerProfile customerProfile = new CustomerProfile(person);
-          helper(customerProfile);
-          break;
+        Person person = new Person(customerName);
+        CustomerProfile customerProfile = new CustomerProfile(person);
+        helper(customerProfile);
+        break;
 
         case 2:
-            // Staff option - auto-generate sales orders and print report
-            int customerCount = 50; 
-            int adsFee = 100; 
-            ConfigureABusiness.generateOrders(business, customerCount, adsFee);
-            break;
+          // Staff option - auto-generate sales orders and print report
+          int customerCount = 50; 
+          int adsFee = 100; 
+          ConfigureABusiness.generateOrders(business, customerCount, adsFee);
+          break;
 
         case 3:
-            // Exit option
-            exitCode = true;
-            System.out.println("Exiting...");
-            break;
+          // Exit option
+          exitCode = true;
+          System.out.println("Exiting...");
+          break;
 
         default:
-            System.out.println("Invalid option, please try again.");
-            break;
+          System.out.println("Invalid option, please try again.");
+          break;
       }
     }
     sc.close();
 }
+
+
+
+
+
 
     //for part1: generate to a method~
     public static void helper(CustomerProfile customerProfile) {
@@ -116,9 +119,10 @@ public class DigitalMarketingApplication {
       sc.nextLine();
 
 
+
       //depending on how customers select, then solutionOffer will be provived
       SolutionOfferCatalog solutionCatalog = business.getSolutionOfferCatalog();
-      List<SolutionOffer> offers = filterOffers(solutionCatalog, marketInput, channelInput);
+      List<SolutionOffer> offers = filterCustomerOffers(solutionCatalog, marketInput, channelInput);
       
       List<Product> selectedProducts = new ArrayList<Product>();//To store selected products
 
@@ -152,8 +156,8 @@ public class DigitalMarketingApplication {
 
 
       System.out.println("\nDo you want to buy this bundle? (hell yeah/nah)");
-      String confirmation = sc.nextLine();
-      if (confirmation.equalsIgnoreCase("hell yeah")) {
+      String confirmationOrder = sc.nextLine();
+      if (confirmationOrder.equalsIgnoreCase("hell yeah")) {
 
         MasterOrderList masterOrderList = business.getMasterOrderList();
         Order newOrder = masterOrderList.newOrder(customerProfile);
@@ -177,7 +181,7 @@ public class DigitalMarketingApplication {
           System.out.println("\n<Order cancelled>\n");
       }
 
-      System.out.println("\nContinue shopping? (absolutely/nope)");
+      System.out.println("\nContinue shopping? (sure/nope)");
       String continueShopping = sc.nextLine();
       if (continueShopping.equalsIgnoreCase("nope")) {
         return;
@@ -185,27 +189,47 @@ public class DigitalMarketingApplication {
     }
 
 
+
     //filter both market and channel, then return the right offer for customer
-    private static List<SolutionOffer> filterOffers(SolutionOfferCatalog solutionCatalog, int marketInput, int channelInput) {
-    List<SolutionOffer> filteredOffers = new ArrayList<>();
-    for (SolutionOffer offer : solutionCatalog.getSolutionOffers()) {
-      MarketChannelAssignment mca = offer.getMarketChannelCombination();
-      if (mca != null) {
-        Market market = mca.getMarket();
-        Channel channel = mca.getChannel();
-
-        boolean marketMatch = (marketInput == 1 && market.getName().equals("electronics")) ||
-          (marketInput == 2 && market.getName().equals("clothes")) ||
-          (marketInput == 3 && market.getName().equals("sephora"));
-        boolean channelMatch = (channelInput == 1 && channel.getType().equals("inStore")) ||
-          (channelInput == 2 && channel.getType().equals("online"));
-
-          if (marketMatch && channelMatch) {
-            filteredOffers.add(offer);
-            System.out.println("\n<Bundle added> ");
+    private static List<SolutionOffer> filterCustomerOffers(SolutionOfferCatalog solutionCatalog, int marketInput, int channelInput) {
+      List<SolutionOffer> filteredOffers = new ArrayList<>();
+  
+      for (SolutionOffer offer : solutionCatalog.getSolutionOffers()) {
+          if (isOfferMatching(offer, marketInput, channelInput)) { 
+              filteredOffers.add(offer);
+              System.out.println("\n<Bundle added> ");
           }
       }
+      return filteredOffers;
     }
-    return filteredOffers;
+
+  
+    private static boolean isOfferMatching(SolutionOffer offer, int marketInput, int channelInput) {
+      MarketChannelAssignment mca = offer.getMarketChannelCombination();
+      if (mca == null) return false;
+  
+      Market market = mca.getMarket();
+      Channel channel = mca.getChannel();
+  
+      return isMarketMatch(market, marketInput) && isChannelMatch(channel, channelInput);
     }
+  
+    private static boolean isMarketMatch(Market market, int marketInput) {
+      switch (marketInput) {
+        case 1: return market.getName().equals("electronics");
+        case 2: return market.getName().equals("clothes");
+        case 3: return market.getName().equals("sephora");
+        default: return false;
+      }
+    }
+  
+    private static boolean isChannelMatch(Channel channel, int channelInput) {
+      switch (channelInput) {
+        case 1: return channel.getType().equals("inStore");
+        case 2: return channel.getType().equals("online");
+        default: return false;
+      }
+    }
+
+  
 }

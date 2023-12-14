@@ -123,7 +123,6 @@ public class ConfigureABusiness {
     Channel c1 = new Channel("inStore");
     Channel c2 = new Channel("online");
 
-
     
     channelCatalog.addChannel(c1);
     channelCatalog.addChannel(c2);
@@ -173,7 +172,6 @@ public class ConfigureABusiness {
     keyboardforOnline.setMarketChannelCombination(electronicOnline);
     mouseforOnline.setMarketChannelCombination(electronicOnline);
 
-
     SolutionOffer so5 = new SolutionOffer(clothesOnline);
     so5.addProduct(pantforOnline);
     so5.addProduct(shoesforOnline);
@@ -189,7 +187,6 @@ public class ConfigureABusiness {
     facemaskforOnline.setMarketChannelCombination(sephoraOnline);
     lotionforOnline.setMarketChannelCombination(sephoraOnline);
     lipstickforOnline.setMarketChannelCombination(sephoraOnline);
-
 
 
     // 添加解決方案到解決方案目錄
@@ -242,7 +239,6 @@ public class ConfigureABusiness {
 
 
 
-
   static void loadCustomers(Business b, int customerCount) {
     CustomerDirectory customerDirectory = b.getCustomerDirectory();
     PersonDirectory personDirectory = b.getPersonDirectory();
@@ -254,7 +250,6 @@ public class ConfigureABusiness {
       customerDirectory.newCustomerProfile(newPerson);
     }
   }
-
 
   
   static void loadOrders(Business b, int orderCount, int itemCount) {
@@ -308,113 +303,6 @@ public class ConfigureABusiness {
 
   }
 
-/* 
-  //write method for auto-generate sales orders
-  public static void generateOrders(Business b, int customerCount, int adsFee) {
-    Faker faker = new Faker();
-    final int MAX_PRODUCTS_PER_BUNDLE = 3;
-
-    MasterOrderList mol = b.getMasterOrderList();
-    CustomerDirectory cd = b.getCustomerDirectory();
-    SolutionOfferCatalog solutionOfferCatalog = b.getSolutionOfferCatalog();
-
-    int totalOrderValue = 0;
-    Map<String, Integer> revenueByChannel = new HashMap<>();
-    Map<String, Integer> revenueByMarket = new HashMap<>();
-    int revenueFromAds = 0, revenueNotFromAds =0;
-
-    for (int i = 0; i < customerCount; i++) {
-      // Create a random customer
-      String randomName = faker.name().fullName();
-      Person newPerson = new Person(randomName);
-    
-      //use the method in CustomerDirectory to create and add new customer
-      CustomerProfile customer = cd.newCustomerProfile(newPerson);
-
-      // Randomly decide between choosing a solution offer or individual products
-      boolean chooseSolutionOffer = Math.random() < 0.5;
-      int orderValue = 0;
-      System.out.println("\nCustomer "+ randomName + " is buying: ");
-
-      if (chooseSolutionOffer) {
-        // Randomly pick a solution offer
-        SolutionOffer offer = pickRandomSolutionOffer(solutionOfferCatalog);
-        if(offer.getMarketChannelCombination()!=null){
-          Order order = mol.newOrder(customer);
-          String marketName = offer.getMarketChannelCombination().getMarket().getName();
-          String channelName = offer.getMarketChannelCombination().getChannel().getType();
-
-          System.out.println("Bundle: "+ marketName + " ("+ channelName+")");
-
-
-          for (Product product : offer.getProductList()) {
-            int price = product.getTargetPrice();
-            orderValue += price;
-            order.newOrderItem(product, price, 1); // Assuming quantity is 1
-            System.out.println("---Product: "+ product.getName()+ ", Price: "+ price+ ", Quantity: 1");
-          }
-          orderValue += adsFee; // Add advertising fee for solution offers
-          System.out.println("Advertising Revenue: "+ adsFee);
-
-          //Update channel and market revenue
-          updateRevenue(revenueByChannel, channelName, orderValue);
-          updateRevenue(revenueByMarket, marketName, orderValue);
-
-          // Update advertising revenue
-          revenueFromAds += adsFee;
-        }
-      } else {
-        // Choose individual products
-        Order order = mol.newOrder(customer);
-        int productCount = getRandom(1, MAX_PRODUCTS_PER_BUNDLE);
-
-        for (int j = 0; j < productCount; j++) {
-          // Randomly select products and add to order
-          Product randomProduct = pickRandomProduct(solutionOfferCatalog);
-          if(randomProduct.getMarketChannelCombination()!=null){
-            int randomPrice = getRandom(randomProduct.getFloorPrice(), randomProduct.getCeilingPrice());
-            int randomQuantity = getRandom(1, 10); // Assuming max quantity is 10
-
-            orderValue += randomPrice * randomQuantity;
-            order.newOrderItem(randomProduct, randomPrice, randomQuantity);
-            System.out.println("Product: "+ randomProduct.getName()+", Price: " + randomPrice + ", Quantity: " + randomQuantity);
-          
-            // Update channel and market revenue for individual products
-            String marketName = randomProduct.getMarketChannelCombination().getMarket().getName();
-            String channelName = randomProduct.getMarketChannelCombination().getChannel().getType();
-            updateRevenue(revenueByChannel, channelName, orderValue);
-            updateRevenue(revenueByMarket, marketName, orderValue);
-          }
-        }
-      }
-      System.out.println("Order Value for Customer "+ randomName+": "+orderValue);
-      totalOrderValue += orderValue;
-    }
-    // Calculate revenueNotFromAds after the loop
-    revenueNotFromAds = totalOrderValue - revenueFromAds;
-    printSummary(totalOrderValue, revenueByChannel, revenueByMarket, revenueFromAds, revenueNotFromAds);
-  }
-
-
-
-  private static void updateRevenue(Map<String, Integer> revenueMap, String key, int value){
-    revenueMap.put(key, revenueMap.getOrDefault(key, 0) + value);
-  }
-
-
-  //print report summary
-  public static void printSummary(int totalRevenue, Map<String, Integer> revenueByChannel, Map<String, Integer> revenueByMarket, int revenueFromAds, int revenueNotFromAds) {
-    System.out.println("---------------------------------------------------");
-    System.out.println("<General Report>");
-    System.out.println("\nTotal Revenue: $" + totalRevenue);
-    System.out.println("\nRevenue by Channel:");
-    revenueByChannel.forEach((channel, value) -> System.out.println("- " + channel + ": $" + value));
-    System.out.println("\nRevenue by Market:");
-    revenueByMarket.forEach((market, value) -> System.out.println("- " + market + ": $" + value));
-    System.out.println("\nRevenue from Ads: $" + revenueFromAds);
-    System.out.println("\nRevenue not from Ads: $" + revenueNotFromAds);
-    System.out.println("----------------------------------------------------");
-  }*/
 
   //write method for auto-generate sales orders
   public static void generateOrders(Business b, int customerCount, int adsFee) {
@@ -457,7 +345,7 @@ public class ConfigureABusiness {
                 for (Product product : offer.getProductList()) {
                     int price = product.getTargetPrice();
                     orderValue += price;
-                    order.newOrderItem(product, price, 1); // Assuming quantity is 1
+                    order.newOrderItem(product, price, 1); // design quantity is 1
                     System.out.println("---Product: " + product.getName() + ", Price: " + price + ", Quantity: 1");
                 }
                 orderValue += adsFee; // Add advertising fee for solution offers
@@ -504,12 +392,11 @@ public class ConfigureABusiness {
     printSummary(totalOrderValue, revenueByChannel, revenueByMarket, totalSolutionOfferValue, revenueFromAds, revenueNotFromAds);
 }
 
- 
-
 
 private static void updateRevenue(Map<String, Integer> revenueMap, String key, int value) {
     revenueMap.put(key, revenueMap.getOrDefault(key, 0) + value);
 }
+
 
 // Print report summary
 public static void printSummary(int totalRevenue, Map<String, Integer> revenueByChannel, Map<String, Integer> revenueByMarket,
@@ -544,9 +431,6 @@ int totalSolutionOfferValue, int revenueFromAds, int revenueNotFromAds) {
     }
   return allProducts.get(getRandom(0, allProducts.size() - 1));
   }
-
-
-
 
 
   

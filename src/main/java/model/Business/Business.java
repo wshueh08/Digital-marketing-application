@@ -143,35 +143,51 @@ public class Business {
         //suppliers.printShortInfo();
         //customerdirectory.printShortInfo();
         //masterorderlist.printShortInfo();
+        
         System.out.println("\nMarket:");
         MarketCatalog marketCatalog = getMarketCatalog();
-        for(String marketName : marketCatalog.getMarketNames()){
-            System.out.println("-" + marketName);
+        if(marketCatalog != null && !marketCatalog.getMarketNames().isEmpty()){
+            for(String marketName : marketCatalog.getMarketNames()){
+                System.out.println("-" + marketName);
+            }
+        }else{
+            System.out.println("No market information available");
         }
+        
+      
 
-        System.out.println("\nChannels:");
+        System.out.println("\nChannel:");
         ChannelCatalog channelCatalog = getChannelCatalog();
-        for(String channelType : channelCatalog.getChannelTypes()){
-            System.out.println("-" + channelType);
+        if(channelCatalog != null && !channelCatalog.getChannelTypes().isEmpty()) {
+            for(String channelType : channelCatalog.getChannelTypes()) {
+                System.out.println("- " + channelType);
+            }
+        }else{
+            System.out.println("No channel information available.");
         }
 
-        System.out.println("\nSolution Offers: ");
+
+        System.out.println("\n<Solution Offers> ");
         SolutionOfferCatalog solutionOfferCatalog = getSolutionOfferCatalog();
-        for (SolutionOffer solutionOffer : solutionOfferCatalog.getSolutionOffers()){
+        if(solutionOfferCatalog != null && !solutionOfferCatalog.getSolutionOffers().isEmpty()) {
+        for(SolutionOffer solutionOffer : solutionOfferCatalog.getSolutionOffers()) {
             MarketChannelAssignment mca = solutionOffer.getMarketChannelCombination();
-            if (mca != null){
-                System.out.println("Market:\n " + mca.getMarket()+ ", Channel: "+ mca.getChannel().getType());
+            if(mca != null) {
+                System.out.println("\nMarket: " + mca.getMarket().getName() + ", Channel: " + mca.getChannel().getType());
             }
 
             List<Product> products = solutionOffer.getProductList();
-            if(products != null && !products.isEmpty()){
-                for(Product product:products){
-                    System.out.println("-Product Name: "+ product.getName());
+            if(products != null && !products.isEmpty()) {
+                for(Product product : products) {
+                    System.out.println("\n- Product Name: " + product.getName());
                 }
             }else{
                 System.out.println("- No Product in this offer.");
             }
         }
+    }else{
+        System.out.println("No solution offers information available.");
+    }
         System.out.println("---------------------------------------");
     }
 }

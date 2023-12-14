@@ -41,17 +41,6 @@ public class Market {
         return name;
     }
 
-    /*public Market(String s) {
-        characteristics = new ArrayList<String>();
-        characteristics.add(s);
-        this.so = new ArrayList<>();
-        this.channels = new ArrayList<>();
-    }*/
-
-    /* 
-    public void loadSolutionOffers(List<SolutionOffer> offers) {
-        this.so.addAll(offers);
-    }*/
 
     public void addSolutionOffer(SolutionOffer offer) {
         this.so.add(offer);
