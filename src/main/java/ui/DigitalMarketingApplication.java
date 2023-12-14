@@ -56,7 +56,8 @@ public class DigitalMarketingApplication {
 
 
     while (!exitCode) {
-      System.out.println("\n1. I'm a customer, please give me something cool");
+      System.out.println("\n~Welcome to vv DigitalMarketing~");
+      System.out.println("1. I'm a customer, please give me something cool");
       System.out.println("2. I'm a staff, I want to check sales orders and report");
       System.out.println("3. Exit");
 
@@ -228,10 +229,10 @@ public class DigitalMarketingApplication {
       List<SolutionOffer> filteredOffers = new ArrayList<>();
   
       for (SolutionOffer offer : solutionCatalog.getSolutionOffers()) {
-          if (isOfferMatching(offer, marketInput, channelInput)) { 
-              filteredOffers.add(offer);
-              System.out.println("\n<Bundle added> ");
-          }
+        if (isOfferMatching(offer, marketInput, channelInput)) { 
+          filteredOffers.add(offer);
+          System.out.println("\n<Bundle added> ");
+        }
       }
       return filteredOffers;
     }
