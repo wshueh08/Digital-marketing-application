@@ -7,6 +7,7 @@ package ui;
 
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -101,24 +102,34 @@ public class DigitalMarketingApplication {
 
     //for part1: generate to a method~
     public static void helper(CustomerProfile customerProfile) {
-      System.out.println("\nPlease choose a department you want to buy: ");
-      System.out.println("1. Electronics ($500-$1000)");
-      System.out.println("2. Clothes ($100-$500)");
-      System.out.println("3. Sephora! Some make-up stuff please ($20-$100)");
-      System.out.println("4. Exit! ");
+      int marketInput = 0;
+      while (marketInput < 1 || marketInput > 4) {
+        System.out.println("\nPlease choose a department you want to buy: ");
+        System.out.println("1. Electronics ($500-$1000)");
+        System.out.println("2. Clothes ($100-$500)");
+        System.out.println("3. Sephora! Some make-up stuff please ($20-$100)");
+        System.out.println("4. Exit! ");
 
-      int marketInput = sc.nextInt();
-      if(marketInput==4)
-        return;
+        marketInput = getIntInput();
+        if (marketInput < 1 || marketInput > 4) {
+            System.out.println("Please type a valid number.");
+        }
+      }
+      if (marketInput == 4) return;
       
-      System.out.println("\nPlease choose a shopping channel: 1. in store 2. online 3. Ooops! Return to the home page please");
-      int channelInput = sc.nextInt();
-      if(channelInput==3)
-        return; 
+      int channelInput = 0;
+      while (channelInput < 1 || channelInput > 3) {
+        System.out.println("\nPlease choose a shopping channel: 1. in store 2. online 3. Ooops! Return to the home page please");
+        channelInput = getIntInput();
+        if (channelInput < 1 || channelInput > 3) {
+            System.out.println("Please type a valid number.");
+        }
+      }
+      if (channelInput == 3) return;
       
       sc.nextLine();
 
-
+    
 
       //depending on how customers select, then solutionOffer will be provived
       SolutionOfferCatalog solutionCatalog = business.getSolutionOfferCatalog();
@@ -155,10 +166,16 @@ public class DigitalMarketingApplication {
       System.out.println("");
 
 
-      System.out.println("\nDo you want to buy this bundle? (hell yeah/nah)");
-      String confirmationOrder = sc.nextLine();
-      if (confirmationOrder.equalsIgnoreCase("hell yeah")) {
+      String confirmationOrder = "";
+      while (!confirmationOrder.equalsIgnoreCase("hell yeah") && !confirmationOrder.equalsIgnoreCase("nah")) {
+        System.out.println("\nDo you want to buy this bundle? (hell yeah/nah)");
+        confirmationOrder = sc.nextLine();
+        if (!confirmationOrder.equalsIgnoreCase("hell yeah") && !confirmationOrder.equalsIgnoreCase("nah")) {
+          System.out.println("I don't know your meaning, please type again.");
+        }
+      }
 
+      if (confirmationOrder.equalsIgnoreCase("hell yeah")) {
         MasterOrderList masterOrderList = business.getMasterOrderList();
         Order newOrder = masterOrderList.newOrder(customerProfile);
 
@@ -168,25 +185,41 @@ public class DigitalMarketingApplication {
           newOrder.newOrderItem(product, price, quantity);
         }
 
-        System.out.println("\nOrder Details:");
-          newOrder.getOrderItemList().forEach(orderItem -> {
-            Product product = orderItem.getSelectedProduct();
-            int salesPrice = orderItem.getActualPrice();
-            System.out.println(" - " + product.getName() + ": " + salesPrice);
-          });
-
-          System.out.println("Total Order Price: " + newOrder.getOrderTotal());
-          System.out.println("\n<Order has been placed successfully>\n");
-      } else {
-          System.out.println("\n<Order cancelled>\n");
+      }else{
+        System.out.println("\n<Order cancelled>\n");
       }
 
-      System.out.println("\nContinue shopping? (sure/nope)");
-      String continueShopping = sc.nextLine();
+      
+      // Continue shopping loop
+      String continueShopping = "";
+      while (!continueShopping.equalsIgnoreCase("sure") && !continueShopping.equalsIgnoreCase("nope")) {
+        System.out.println("\nContinue shopping? (sure/nope)");
+        continueShopping = sc.nextLine();
+        if (!continueShopping.equalsIgnoreCase("sure") && !continueShopping.equalsIgnoreCase("nope")) {
+            System.out.println("I don't know your meaning, please type again.");
+        }
+      }
+
       if (continueShopping.equalsIgnoreCase("nope")) {
         return;
       }
     }
+
+
+
+
+    // Method to safely read an integer from the user
+    private static int getIntInput() {
+      while (true) {
+        try {
+          return sc.nextInt();
+        }catch(InputMismatchException e) {
+          sc.nextLine(); // clear the invalid input
+          System.out.println("Invalid input, please enter a number.");
+        }
+      }
+    }
+
 
 
 
@@ -230,6 +263,8 @@ public class DigitalMarketingApplication {
         default: return false;
       }
     }
+
+
 
   
 }
